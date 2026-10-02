@@ -26,11 +26,15 @@ services:
       - database
     networks:
       - frontend-network
+      - backend-network
     restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
+      args:
+        VITE_AUTH0_DOMAIN: "your-domain.auth0.com"
+        VITE_AUTH0_CLIENT_ID: "your-client-id"
       dockerfile: Dockerfile
     container_name: orbis-frontend
     networks:
