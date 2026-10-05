@@ -33,8 +33,15 @@ services:
     build:
       context: ./frontend
       args:
+        VITE_API_URL: ${VITE_API_URL}
         VITE_AUTH0_DOMAIN: ${VITE_AUTH0_DOMAIN}
         VITE_AUTH0_CLIENT_ID: ${VITE_AUTH0_CLIENT_ID}
+        VITE_AUTH0_REDIRECT_URI: ${VITE_AUTH0_REDIRECT_URI}
+        VITE_AUTH0_AUDIENCE: ${VITE_AUTH0_AUDIENCE}
+        VITE_AUTH0_SCOPE: ${VITE_AUTH0_SCOPE}
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+        VITE_SUPABASE_SERVICE_ROLE_KEY: ${VITE_SUPABASE_SERVICE_ROLE_KEY}
       dockerfile: Dockerfile
     container_name: orbis-frontend
     networks:

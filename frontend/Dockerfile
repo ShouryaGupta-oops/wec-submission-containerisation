@@ -1,6 +1,4 @@
-# ============================================
 # Stage 1: Build the React app
-# ============================================
 FROM node:20-alpine AS build
 
 WORKDIR /app
@@ -8,17 +6,29 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
+ARG VITE_API_URL
 ARG VITE_AUTH0_DOMAIN
 ARG VITE_AUTH0_CLIENT_ID
-ENV VITE_AUTH0_DOMAIN=$VITE_AUTH0_DOMAIN
-ENV VITE_AUTH0_CLIENT_ID=$VITE_AUTH0_CLIENT_ID
+ARG VITE_AUTH0_REDIRECT_URI
+ARG VITE_AUTH0_AUDIENCE
+ARG VITE_AUTH0_SCOPE
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_ANON_KEY
+ARG VITE_SUPABASE_SERVICE_ROLE_KEY
+ENV VITE_API_URL=$VITE_API_URL \
+    VITE_AUTH0_DOMAIN=$VITE_AUTH0_DOMAIN \
+    VITE_AUTH0_CLIENT_ID=$VITE_AUTH0_CLIENT_ID \
+    VITE_AUTH0_REDIRECT_URI=$VITE_AUTH0_REDIRECT_URI \
+    VITE_AUTH0_AUDIENCE=$VITE_AUTH0_AUDIENCE \
+    VITE_AUTH0_SCOPE=$VITE_AUTH0_SCOPE \
+    VITE_SUPABASE_URL=$VITE_SUPABASE_URL \
+    VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY \
+    VITE_SUPABASE_SERVICE_ROLE_KEY=$VITE_SUPABASE_SERVICE_ROLE_KEY
 
 COPY . .
 RUN npm run build
 
-# ============================================
 # Stage 2: Serve with Nginx (tiny final image)
-# ============================================
 FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
