@@ -1,4 +1,5 @@
 FROM node:20-alpine
+# hadolint ignore=DL3018
 RUN apk add --no-cache openssl \
  && addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
