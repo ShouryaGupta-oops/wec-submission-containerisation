@@ -300,3 +300,45 @@ i learnt after this,docker saves every Dockerfile instruction as a layer. On the
 That is why instruction order matters. Things that rarely change (base image, system packages, package.json, npm install) should come first, and things that change constantly (my own source code) should come last. Then an everyday code change only rebuilds the last couple of steps instead of reinstalling every dependency.
 
 Blank white page. The page at https://localhost was empty even though the HTML, JS and CSS were all served successfully. The browser console showed Uncaught Error: supabaseUrl is required. The frontend creates a Supabase client on load, and its URL was undefined. Vite only reads VITE_ variables at build time, and my Docker build never passed them, so they were missing from the compiled JavaScript. I fixed it by declaring ARG/ENV for VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY before npm run build, passing them through build.args in the compose file from .env, and rebuilding with --no-cache. I used dummy values, so features that need a real Supabase project will not work, but the page now renders.
+
+i didnt know much about phase 7 so i headed towards phase 8 (bonus) Container Hardening and CI Pipeline
+
+Non-root users
+
+in bakcend i created a system user and group in the Dockerfile and switched to it with `USER appuser` after `npm ci` and `prisma generate`. Source files are copied with `COPY --chown`, so no extra `chown -R` layer doubles the image size. The app listens on port 4000, which needs no root privileges
+
+in frontend the final stage now uses `nginxinc/nginx-unprivileged:alpine`. The stock `nginx:alpine` image can't run as a non-root user, because its PID file and cache directories are root-owned. The unprivileged image is built for this and listens on **8080**, so I changed the proxy upstream in `nginx/default.conf` from `frontend:80` to `frontend:8080`. The build stage still runs as root, but it is discarded and never shipped.
+
+ docker compose exec backend id
+uid=100(appuser) gid=101(appgroup) groups=101(appgroup)
+
+docker compose exec frontend id
+uid=101(nginx) gid=101(nginx) groups=101(nginx)
+
+I added `backend/.dockerignore` and `frontend/.dockerignore` excluding `node_modules`, `.env` and `.env.*`, `.git`, `dist` (frontend), logs, and docs. The point is:
+
+ docker compose exec backend ls -a /app
+.                  node_modules       server.js
+..                 package-lock.json  src
+.dockerignore      package.json
+database           prisma
+
+- The frontend is multi-stage: Node, npm and `node_modules` exist only in the build stage. The runtime image has only Nginx and the compiled static files. Final size: [PASTE docker images output].
+- The backend installs only `openssl`, which Prisma's engine needs, with `--no-cache` so the package index isn't kept. No compilers or extra tools are installed.
+- I did not remove `openssl` from the runtime image because Prisma fails without it (the `libssl` error from Phase 1).
+
+File: `.github/workflows/docker-build.yml`. It triggers on pushes and pull requests to `main`/`master` and runs two jobs:
+1. **lint-dockerfiles:** runs hadolint on both Dockerfiles. I ignore `DL3018` (pinning exact `apk` package versions) because pinned Alpine versions break when the package index moves on.
+2. **build-images:** builds both images with Buildx (`push: false`, `load: true` so the image is available locally), uses the GitHub Actions layer cache, checks that both containers run as non-root, and fails if the frontend image exceeds 110 MB. Frontend `VITE_*` build args use placeholder values; no real secrets are in the workflow.
+
+**Result:** [PASTE link to the successful Actions run and/or a screenshot of the green check]
+
+### Use of AI assistance
+
+I used an AI assistant to draft the initial hardened Dockerfiles and workflow. I then reviewed them, tested them locally, and fixed the problems I found (the Nginx non-root issue, the `load: true` flag so the CI size check can see the image, and the hadolint threshold). I can explain every line.
+
+### What I'd improve next
+
+- Pin base images to exact versions or digests.
+- Add a vulnerability scan (for example Trivy) to the CI.
+- The proxy container still starts as root so it can bind port 443 and read the TLS certificate; it drops to the `nginx` user for its worker processes. A fully non-root proxy would use the unprivileged image on high ports.

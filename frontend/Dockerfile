@@ -29,9 +29,6 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Serve with Nginx (tiny final image)
-FROM nginx:alpine
-
+FROM nginxinc/nginx-unprivileged:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 8080

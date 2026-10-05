@@ -1,12 +1,11 @@
 FROM node:20-alpine
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl \
+ && addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
-
-COPY . .
-
+COPY --chown=appuser:appgroup package.json package-lock.json ./
 RUN npm ci
+COPY --chown=appuser:appgroup . .
 RUN npx prisma generate
-
+USER appuser
 EXPOSE 4000
-
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
