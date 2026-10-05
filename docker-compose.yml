@@ -3,9 +3,9 @@ services:
     image: postgres:15-alpine
     container_name: orbis-db
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgrespassword
-      POSTGRES_DB: orbis
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -18,10 +18,10 @@ services:
       dockerfile: Dockerfile
     container_name: orbis-backend
     environment:
-      PORT: 4000
-      DATABASE_URL: postgresql://postgres:postgrespassword@database:5432/orbis?schema=public
-      AUTH0_ISSUER_BASE_URL: https://dev-dummy.auth0.com/
-      AUTH0_AUDIENCE: https://api.orbis.com
+      PORT: ${BACKEND_PORT}
+      DATABASE_URL: ${DATABASE_URL}
+      AUTH0_ISSUER_BASE_URL: ${AUTH0_ISSUER_BASE_URL}
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
     depends_on:
       - database
     networks:
@@ -33,8 +33,8 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_AUTH0_DOMAIN: "your-domain.auth0.com"
-        VITE_AUTH0_CLIENT_ID: "your-client-id"
+        VITE_AUTH0_DOMAIN: ${VITE_AUTH0_DOMAIN}
+        VITE_AUTH0_CLIENT_ID: ${VITE_AUTH0_CLIENT_ID}
       dockerfile: Dockerfile
     container_name: orbis-frontend
     networks:
