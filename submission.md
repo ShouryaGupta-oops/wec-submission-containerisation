@@ -331,7 +331,7 @@ File: `.github/workflows/docker-build.yml`. It triggers on pushes and pull reque
 1. **lint-dockerfiles:** runs hadolint on both Dockerfiles. I ignore `DL3018` (pinning exact `apk` package versions) because pinned Alpine versions break when the package index moves on.
 2. **build-images:** builds both images with Buildx (`push: false`, `load: true` so the image is available locally), uses the GitHub Actions layer cache, checks that both containers run as non-root, and fails if the frontend image exceeds 110 MB. Frontend `VITE_*` build args use placeholder values; no real secrets are in the workflow.
 
-**Result:** [PASTE link to the successful Actions run and/or a screenshot of the green check]
+![Proof of workflow](./photo-of-submission.md/workflow-check.png)
 
 ### Use of AI assistance
 
