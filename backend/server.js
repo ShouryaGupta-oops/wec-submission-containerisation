@@ -37,7 +37,7 @@ app.use('/api', checkJwt, profileRoutes); // Changed from '/api/profiles' to '/a
 app.use(errorHandler);
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`- Local: http://localhost:${PORT}`);
   if (process.env.SERVER_URL) {
@@ -48,7 +48,7 @@ app.listen(PORT, () => {
 // Graceful shutdown
 const gracefulShutdown = async () => {
   console.log('Starting graceful shutdown...');
-  
+
   // Close server
   server.close(() => {
     console.log('Express server closed');
@@ -58,7 +58,7 @@ const gracefulShutdown = async () => {
     // Disconnect Prisma
     await prisma.$disconnect();
     console.log('Database connection closed');
-    
+
     process.exit(0);
   } catch (err) {
     console.error('Error during shutdown:', err);

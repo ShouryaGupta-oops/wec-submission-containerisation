@@ -1,0 +1,216 @@
+ Image systems-containerization-task-2026-frontend Building 
+ Image systems-containerization-task-2026-backend Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.38kB done
+#1 DONE 0.0s
+
+#2 [backend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 184B 0.0s done
+#2 DONE 0.1s
+
+#3 [frontend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 684B 0.0s done
+#3 DONE 0.1s
+
+#4 [frontend internal] load metadata for docker.io/library/nginx:alpine
+#4 DONE 0.1s
+
+#5 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#5 ...
+
+#6 [auth] library/node:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#5 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#5 DONE 1.9s
+
+#7 [frontend internal] load .dockerignore
+#7 transferring context: 2B 0.0s done
+#7 DONE 0.1s
+
+#8 [frontend internal] load build context
+#8 DONE 0.0s
+
+#9 [backend internal] load .dockerignore
+#9 transferring context: 2B 0.0s done
+#9 DONE 0.1s
+
+#10 [backend internal] load build context
+#10 DONE 0.0s
+
+#11 [backend build 1/6] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#11 resolve docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#11 resolve docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 0.1s done
+#11 DONE 0.1s
+
+#12 [frontend stage-1 1/2] FROM docker.io/library/nginx:alpine@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+#12 resolve docker.io/library/nginx:alpine@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2 0.1s done
+#12 DONE 0.1s
+
+#8 [frontend internal] load build context
+#8 ...
+
+#10 [backend internal] load build context
+#10 transferring context: 6.71kB 0.5s done
+#10 DONE 0.5s
+
+#13 [backend 2/6] RUN apk add --no-cache openssl
+#13 CACHED
+
+#14 [backend 3/6] WORKDIR /app
+#14 CACHED
+
+#8 [frontend internal] load build context
+#8 ...
+
+#15 [backend 4/6] COPY . .
+#15 DONE 0.1s
+
+#8 [frontend internal] load build context
+#8 transferring context: 55.91kB 5.5s
+#8 ...
+
+#16 [backend 5/6] RUN npm ci
+#16 3.006 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+#16 3.214 npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+#16 3.265 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+#16 3.361 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#16 3.466 npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+#16 3.582 npm warn deprecated gauge@3.0.2: This package is no longer supported.
+#16 9.501 
+#16 9.501 added 191 packages, and audited 192 packages in 9s
+#16 9.501 
+#16 9.501 27 packages are looking for funding
+#16 9.502   run `npm fund` for details
+#16 9.529 
+#16 9.529 17 vulnerabilities (2 low, 2 moderate, 12 high, 1 critical)
+#16 9.529 
+#16 9.529 To address issues that do not require attention, run:
+#16 9.529   npm audit fix
+#16 9.529 
+#16 9.529 To address all issues (including breaking changes), run:
+#16 9.529   npm audit fix --force
+#16 9.529 
+#16 9.529 Run `npm audit` for details.
+#16 9.533 npm notice
+#16 9.533 npm notice New major version of npm available! 10.8.2 -> 12.2.0
+#16 9.533 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#16 9.533 npm notice To update run: npm install -g npm@12.2.0
+#16 9.533 npm notice
+#16 DONE 9.8s
+
+#8 [frontend internal] load build context
+#8 transferring context: 102.46kB 10.5s
+#8 ...
+
+#17 [backend 6/6] RUN npx prisma generate
+#17 1.657 Prisma schema loaded from prisma/schema.prisma
+#17 2.540 
+#17 2.540 ✔ Generated Prisma Client (v6.0.1) to ./node_modules/@prisma/client in 361ms
+#17 2.540 
+#17 2.540 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#17 2.540 
+#17 2.540 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+#17 2.540 
+#17 DONE 2.8s
+
+#18 [backend] exporting to image
+#18 exporting layers
+#18 ...
+
+#8 [frontend internal] load build context
+#8 transferring context: 182.37kB 18.5s
+#8 ...
+
+#18 [backend] exporting to image
+#18 exporting layers 7.4s done
+#18 exporting manifest sha256:b8ef9742d0944a1419be655dce10fc73148233000e80b9fcf286e0bb9f661880
+#18 exporting manifest sha256:b8ef9742d0944a1419be655dce10fc73148233000e80b9fcf286e0bb9f661880 0.0s done
+#18 exporting config sha256:ddf8013839bc2e12b9f761bc0b38d56afeb97c4c7360f7dcc410e51feb1adf59 0.0s done
+#18 exporting attestation manifest sha256:531f8d5ce746d128143023b31eb815cc399374a4d04e5d3f73d6ec1b094c31d3 0.1s done
+#18 exporting manifest list sha256:0d4a050bbbd0c92631ebed3f1579c8141c4bfb32292a070ca77a2a5be07eab4c
+#18 exporting manifest list sha256:0d4a050bbbd0c92631ebed3f1579c8141c4bfb32292a070ca77a2a5be07eab4c 0.0s done
+#18 naming to docker.io/library/systems-containerization-task-2026-backend:latest done
+#18 unpacking to docker.io/library/systems-containerization-task-2026-backend:latest
+#18 unpacking to docker.io/library/systems-containerization-task-2026-backend:latest 3.0s done
+#18 DONE 10.7s
+
+#8 [frontend internal] load build context
+#8 transferring context: 243.22kB 24.0s
+#8 ...
+
+#19 [backend] resolving provenance for metadata file
+#19 DONE 0.0s
+
+#8 [frontend internal] load build context
+#8 transferring context: 299.09kB 29.0s
+#8 transferring context: 355.51kB 34.1s
+#8 transferring context: 416.11kB 39.2s
+#8 transferring context: 485.19kB 44.3s
+#8 transferring context: 547.22kB 49.3s
+#8 transferring context: 605.43kB 54.4s
+#8 transferring context: 663.88kB 59.4s
+#8 transferring context: 720.25kB 64.5s
+#8 transferring context: 776.06kB 69.7s
+#8 transferring context: 832.17kB 74.7s
+#8 transferring context: 880.78kB 79.7s
+#8 transferring context: 929.90kB 84.8s
+#8 transferring context: 982.94kB 89.8s
+#8 transferring context: 1.03MB 94.9s
+#8 transferring context: 1.08MB 99.9s
+#8 transferring context: 1.14MB 105.0s
+#8 transferring context: 1.19MB 110.1s
+#8 transferring context: 1.23MB 115.1s
+#8 transferring context: 1.28MB 120.2s
+#8 transferring context: 1.32MB 125.2s
+#8 transferring context: 1.38MB 130.2s
+#8 transferring context: 1.43MB 135.2s
+#8 transferring context: 1.48MB 140.3s
+#8 transferring context: 1.54MB 145.3s
+#8 transferring context: 1.59MB 150.4s
+#8 transferring context: 1.64MB 155.4s
+#8 transferring context: 1.68MB 160.6s
+#8 transferring context: 1.74MB 165.6s
+#8 transferring context: 1.79MB 170.3s done
+#8 DONE 170.4s
+
+#20 [frontend build 3/6] COPY package.json package-lock.json ./
+#20 CACHED
+
+#21 [frontend build 4/6] RUN npm install
+#21 CACHED
+
+#22 [frontend build 5/6] COPY . .
+#22 CACHED
+
+#23 [frontend build 6/6] RUN npm run build
+#23 CACHED
+
+#24 [frontend build 2/6] WORKDIR /app
+#24 CACHED
+
+#25 [frontend stage-1 2/2] COPY --from=build /app/dist /usr/share/nginx/html
+#25 CACHED
+
+#26 [frontend] exporting to image
+#26 exporting layers done
+#26 exporting manifest sha256:3b2b6a016ff8a9bc22255e1e81501e002987043432d93d662b67f6d9b1a712da done
+#26 exporting config sha256:9e45a2d59562b8aff26a33d87da362c90980bcc32d0d0cbbe65cd02c43886ed7 done
+#26 exporting attestation manifest sha256:e837d8a6be146290f6f30ec14c67f848a8e8d9b269fd79436c0deb77f20cfc4e 0.1s done
+#26 exporting manifest list sha256:be7c625c5435fb6d16e707bd43a5752e0cc64984a3bccf45eb1860afe52f98d8
+#26 exporting manifest list sha256:be7c625c5435fb6d16e707bd43a5752e0cc64984a3bccf45eb1860afe52f98d8 0.0s done
+#26 naming to docker.io/library/systems-containerization-task-2026-frontend:latest done
+#26 unpacking to docker.io/library/systems-containerization-task-2026-frontend:latest 0.0s done
+#26 DONE 0.3s
+
+#27 [frontend] resolving provenance for metadata file
+#27 DONE 0.0s
+ Image systems-containerization-task-2026-backend Built 
+ Image systems-containerization-task-2026-frontend Built 
+ Container orbis-db Running 
+ Container orbis-frontend Running 
+ Container orbis-proxy Running 
+ Container orbis-backend Recreate 
+ Container orbis-backend Recreated 
+ Container orbis-backend Starting 
+ Container orbis-backend Started 
